@@ -1,0 +1,24 @@
+.vscode/
+__pycache__/
+*.pyc
+.python-version
+uv.lock
+.venv/
+*.egg-info
+dist/
+build/
+
+# Local data directory
+data/
+
+# Generated figures
+figures/*.png
+
+# OS and teamwork metadata
+.DS_Store
+.agents/teamwork/
+ORIGINAL_REQUEST.md
+
+# Coverage artifacts
+.coverage
+.coverage.*

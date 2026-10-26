@@ -1,0 +1,54 @@
+[project]
+name = "tc-cwi-workflows"
+version = "0.2.0"
+description = "Reproducible research workflows for Environmental and Operational Condition (EoC) compensation in ultrasonic SHM using Coda Wave Interferometry (CWI)."
+readme = "README.md"
+requires-python = ">=3.11"
+license = "MIT"
+authors = [
+    { name="Damiano Gianotti (Zensor)", email="damiano.gianotti@zensor.be" },
+    { name="Arnaud Deraemaeker (ULB)", email="Arnaud.Deraemaeker@ulb.be" },
+    { name="Jitendra Kumar Sharma (ULB)", email="jitendra.kumar.sharma@ulb.be" },
+    { name="Luigi Trezza (Airbus)" },
+]
+dependencies = [
+    "h5py",
+    "matplotlib",
+    "numpy",
+    "obspy",
+    "openpyxl",
+    "pandas",
+    "scipy",
+    "tc-cwi>=0.1",
+]
+
+[dependency-groups]
+dev = [
+    "pytest",
+    "ruff",
+]
+
+[tool.uv]
+package = false
+
+[tool.pytest.ini_options]
+pythonpath = ["scripts"]
+
+# Explicit rule set and excludes: ruff's implicit defaults grow between releases, so
+# this gate spells out what it checks and must not start failing on an unrelated
+# `uv sync`. Kept out on purpose: RUF001/003 (they want the "x" and "sigma" in
+# print() and comments replaced by ASCII), SIM (it prefers `key in f` over the
+# explicit h5py `f.keys()` filter, and `T[-1] < T * 1.2` over `T * 1.2 > T[-1]`),
+# BLE001 (load_data skips one unreadable SEG-2 file instead of aborting a dataset),
+# and E5 (the few lines still over 88 chars after formatting are single f-strings the
+# formatter will not split).
+[tool.ruff]
+target-version = "py311"
+
+[tool.ruff.lint]
+select = [
+    "E4", "E7", "E9", "F",     # pycodestyle (errors) + pyflakes
+    "B",                        # bugbear
+    "I", "UP", "C4",            # import order, modern syntax, comprehensions
+    "FURB122", "RUF015", "RUF022", "RUF046",  # the few specific rules worth their noise
+]
