@@ -19,12 +19,6 @@ class TestObstacleSensitivity:
         result = obstacle_sensitivity(ref_dc, obs_dc)
 
         assert isinstance(result, (Struct, SimpleNamespace))
-        assert result.insertion_index == 2
-        assert result.sensitivity_ratio == pytest.approx(4.0)
-        assert result.dc_at_insertion == pytest.approx(0.8)
-        assert result.max_reference_dc == pytest.approx(0.2)
-
-        # Verify alias fields
         assert result.obs_idx == 2
         assert result.sensitivity == pytest.approx(4.0)
         assert result.dc_obs == pytest.approx(0.8)
@@ -32,17 +26,17 @@ class TestObstacleSensitivity:
 
         # Enforce attribute access over subscription
         with pytest.raises(TypeError):
-            _ = result["insertion_index"]
+            _ = result["obs_idx"]
 
     def test_sensitivity_with_multidimensional_numpy_inputs(self):
         ref_dc = np.array([[0.05, 0.1], [0.15, 0.2]])
         obs_dc = np.array([[0.1, 0.12], [0.9, 0.92]])
         result = obstacle_sensitivity(ref_dc, obs_dc)
 
-        assert result.insertion_index == 2
-        assert result.sensitivity_ratio == pytest.approx(0.9 / 0.2)
-        assert result.dc_at_insertion == pytest.approx(0.9)
-        assert result.max_reference_dc == pytest.approx(0.2)
+        assert result.obs_idx == 2
+        assert result.sensitivity == pytest.approx(0.9 / 0.2)
+        assert result.dc_obs == pytest.approx(0.9)
+        assert result.dc_max_ref == pytest.approx(0.2)
 
     @pytest.mark.parametrize(
         ("ref_dc", "obs_dc"),

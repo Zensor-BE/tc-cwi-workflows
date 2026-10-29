@@ -39,13 +39,14 @@ def plot_ulb_results(
     epsf: np.ndarray,
     cc_no_stretch: np.ndarray,
     cc_stretched: np.ndarray,
+    title: str = "Dataset 1 (no obstacle)",
     out_path: str = "ulb_results.png",
 ) -> None:
     fig, axes = plt.subplots(3, 1, sharex=True)
 
     axes[0].plot(sig_idx, temperature, color="darkorange", lw=2, label="Temperature")
     axes[0].set_ylabel("Temperature (°C)")
-    axes[0].set_title("Time stretching on Dataset 1 (no obstacle)")
+    axes[0].set_title(title)
     axes[0].legend(loc="right")
 
     axes[1].plot(
