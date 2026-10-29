@@ -64,7 +64,10 @@ def load_airbus_sg2_dataset(
             "(record 19209079) and extract into data/Airbus/ or data/."
         )
 
-    rows = pd.read_excel(excel_path_file).to_dict("records")
+    # Empty cells can arrive as None; pin the measured columns to float so they read as np.nan
+    rows = pd.read_excel(
+        excel_path_file, dtype={"TEMP_MEAS": float, "RH_MEAS": float}
+    ).to_dict("records")
     # ponytail: k=10, k+=5 means match rows [10, 15, 20, 25, ...];
     # compute direct indices instead of looping arithmetic
     row_indices = (np.arange(len(sg2_files)) * 5 + 10).tolist()
@@ -110,7 +113,6 @@ def load_airbus_sg2_dataset(
         y_all.append(data_norm)
 
     return S, y_all, t
-
 
 
 def _moving_rms(x: np.ndarray, window_size: int) -> np.ndarray:
@@ -228,11 +230,14 @@ def main(peaks: int, t1: float, t2: float, sensor: int):
         print(f"  Error: {e}")
         return
 
-    if len(S) > 62:
-        del S[62]
-        del y_all[62]
-    S.pop()
-    y_all.pop()
+    # Known-bad Zenodo records; match by FILENAME, not position, so the drop survives a re-sorted or extended dataset
+    bad = {
+        "1_0_290_LUT_20240619_composite_monitor_02.sg2",
+        "1_0_447_LUT_20240619_composite_monitor_02.sg2",
+    }
+    keep = [i for i, s in enumerate(S) if s["FILENAME"] not in bad]
+    S = [S[i] for i in keep]
+    y_all = [y_all[i] for i in keep]
 
     try:
         tempinterval, ys, n_temp, n_sensor = _extract_plateau_signals(S, y_all)
