@@ -96,7 +96,7 @@ Experimental datasets are decoupled from git tracking and archived on Zenodo. Do
 ### 2. Airbus Dataset (Record 19209079)
 - **DOI:** [10.5281/zenodo.19209079](https://doi.org/10.5281/zenodo.19209079)
 - **Archive Contents:**
-  - `seg2_data_june2024.zip` (440 SEG-2 acquisitions in `ONDULYS/`)
+  - `seg2_data_june2024.zip` (220 SEG-2 acquisitions in `ONDULYS/`)
   - `temp_and_humidity_data_june2024.zip` (`USER-2024-06-26.xlsx`)
 - **Destination:** Extract archives into `data/Airbus/` (or directly into `data/`):
   ```text
@@ -104,7 +104,7 @@ Experimental datasets are decoupled from git tracking and archived on Zenodo. Do
   ├── seg2_data_june2024/
   │   └── ONDULYS/
   │       ├── 1_0_228_LUT_20240619_composite_monitor_02.sg2
-  │       └── ... (440 files)
+  │       └── ... (220 files)
   └── temp_and_humidity_data_june2024/
       └── USER-2024-06-26.xlsx
   ```

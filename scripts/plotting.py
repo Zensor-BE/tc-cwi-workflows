@@ -46,7 +46,7 @@ def plot_ulb_results(
 
     axes[0].plot(sig_idx, temperature, color="darkorange", lw=2, label="Temperature")
     axes[0].set_ylabel("Temperature (°C)")
-    axes[0].set_title(title)
+    axes[0].set_title(f"Time stretching on {title}")
     axes[0].legend(loc="right")
 
     axes[1].plot(

@@ -64,10 +64,7 @@ def load_airbus_sg2_dataset(
             "(record 19209079) and extract into data/Airbus/ or data/."
         )
 
-    # Empty cells can arrive as None; pin the measured columns to float so they read as np.nan
-    rows = pd.read_excel(
-        excel_path_file, dtype={"TEMP_MEAS": float, "RH_MEAS": float}
-    ).to_dict("records")
+    rows = pd.read_excel(excel_path_file).to_dict("records")
     # ponytail: k=10, k+=5 means match rows [10, 15, 20, 25, ...];
     # compute direct indices instead of looping arithmetic
     row_indices = (np.arange(len(sg2_files)) * 5 + 10).tolist()
