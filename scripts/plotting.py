@@ -89,7 +89,7 @@ def plot_ulb_dc_sensitivity(
     Bottom: Sensitivity ratio = DCobs / max(DCw/o obs)
     """
     fig, axes = plt.subplots(2, 1, figsize=(11, 8))
-    methods = ["Time streching", f"Time streching + MA ref\n(n={ma_window})"]
+    methods = ["Time stretching", f"Time stretching + MA ref\n(n={ma_window})"]
 
     # Top: DC evolution
     ax = axes[0]
@@ -154,7 +154,7 @@ def plot_airbus_mean_cc(
     ax.plot(tempinterval, mean_cc_full_stretched, "-s", linewidth=1.5)
     ax.plot(tempinterval, mean_cc_windowed_stretched, "-^", linewidth=1.5)
     ax.set_xlabel("Temperature (°C)")
-    ax.set_xticks(np.arange(20, 71, 5))
+    ax.set_xticks(np.unique(tempinterval))
     ax.set_ylabel("CC")
     ax.legend(
         [
