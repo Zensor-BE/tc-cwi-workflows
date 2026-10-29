@@ -31,9 +31,15 @@ def load_ulb_dataset(data_dir: Path | str, dataset: int):
         t = np.squeeze(f["t"][:])
         y = f["y"][:].T
 
+    # The exported variable name is mislabeled (each file's single dataset matches
+    # its filename); read the one data key instead of a hard-coded name.
     with h5py.File(temp_file, "r") as f:
-        key_t = next(k for k in f.keys() if k != "#refs#")
-        T = np.squeeze(f[key_t][:])
+        data_keys = [k for k in f.keys() if k != "#refs#"]
+        if len(data_keys) != 1:
+            raise ValueError(
+                f"Expected exactly one data key in {temp_file.name}, found {data_keys}."
+            )
+        T = np.squeeze(f[data_keys[0]][:])
     return t, y, T
 
 
