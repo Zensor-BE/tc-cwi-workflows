@@ -6,6 +6,7 @@ import numpy as np
 import pytest
 from airbus_workflow import (
     _build_plateau_indices,
+    _extract_plateau_signals,
     _get_peak_window_sizes,
     _moving_rms,
     _resolve_airbus_paths,
@@ -76,6 +77,19 @@ class TestAirbusWorkflowHelpers:
         rms = _moving_rms(x, window_size=3)
         assert rms.shape == x.shape
         assert np.all(rms >= 0.0)
+
+    def test_extract_plateau_signals_temperature_offset(self):
+        # Pins the i+3 plateau->temperature offset and the len(S)-1 clamp
+        n = 140
+        S = [{"FILENAME": f"f{i:03d}.sg2", "TEMPERATURE": float(i)} for i in range(n)]
+        y_all = [np.zeros((20, 50)) for _ in range(n)]
+        tempinterval, ys, n_temp, n_sensor = _extract_plateau_signals(S, y_all)
+        ind = _build_plateau_indices(n)
+        np.testing.assert_allclose(
+            tempinterval, [S[min(i + 3, n - 1)]["TEMPERATURE"] for i in ind]
+        )
+        assert (n_temp, n_sensor) == (len(ind), 46)
+        assert ys[0].shape == (20, n_temp)
 
     def test_resolve_airbus_paths(self):
         ondulys, excel = _resolve_airbus_paths()

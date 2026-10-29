@@ -37,7 +37,6 @@ def load_ulb_dataset(data_dir: Path | str, dataset: int):
     return t, y, T
 
 
-
 def obstacle_sensitivity(
     dc_reference: np.ndarray, dc_with_obstacle: np.ndarray
 ) -> Struct:
@@ -62,10 +61,6 @@ def obstacle_sensitivity(
     dc_at_insertion = float(dc_with_obstacle[insertion_index])
     ratio = dc_at_insertion / max_reference_dc
     return Struct(
-        sensitivity_ratio=ratio,
-        insertion_index=insertion_index,
-        dc_at_insertion=dc_at_insertion,
-        max_reference_dc=max_reference_dc,
         sensitivity=ratio,
         obs_idx=insertion_index,
         dc_obs=dc_at_insertion,
@@ -73,7 +68,16 @@ def obstacle_sensitivity(
     )
 
 
-def run_workflow(t, y, T, twin, subsample: int, out_path: str, dc_ref=None):
+def run_workflow(
+    t,
+    y,
+    T,
+    twin,
+    subsample: int,
+    out_path: str,
+    dc_ref=None,
+    title: str = "Dataset 1 (no obstacle)",
+):
     """Run time-stretching workflow with optional MA comparison.
 
     Args:
@@ -120,6 +124,7 @@ def run_workflow(t, y, T, twin, subsample: int, out_path: str, dc_ref=None):
         epsf=out.EPSf,
         cc_no_stretch=out_no_comp.CC,
         cc_stretched=cc,
+        title=title,
         out_path=out_path,
     )
     print(f"  Saved plot        : {out_path}")
@@ -198,18 +203,44 @@ def main() -> None:
     if args.dataset in ("1", "both"):
         print("\nDataset 1 (no obstacle)")
         t, y, T = load_ulb_dataset(DATA_DIR, 1)
-        dc_ref = run_workflow(t, y, T, twin, args.subsample, "ulb_results_dataset1.png")
+        dc_ref = run_workflow(
+            t,
+            y,
+            T,
+            twin,
+            args.subsample,
+            "ulb_results_dataset1.png",
+            title="Dataset 1 (no obstacle)",
+        )
     else:
         dc_ref = None
 
     if args.dataset in ("2", "both"):
         print("\nDataset 2 (with obstacle)")
         t, y, T = load_ulb_dataset(DATA_DIR, 2)
+        if dc_ref is None:
+            # Load dataset 1 as reference when only dataset 2 is requested
+            t_ref, y_ref, T_ref = load_ulb_dataset(DATA_DIR, 1)
+            dc_ref = run_workflow(
+                t_ref,
+                y_ref,
+                T_ref,
+                twin,
+                args.subsample,
+                "ulb_results_dataset1.png",
+                title="Dataset 1 (no obstacle)",
+            )
         run_workflow(
-            t, y, T, twin, args.subsample, "ulb_results_dataset2.png", dc_ref=dc_ref
+            t,
+            y,
+            T,
+            twin,
+            args.subsample,
+            "ulb_results_dataset2.png",
+            dc_ref=dc_ref,
+            title="Dataset 2 (with obstacle)",
         )
 
 
 if __name__ == "__main__":
     main()
-

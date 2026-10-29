@@ -112,7 +112,6 @@ def load_airbus_sg2_dataset(
     return S, y_all, t
 
 
-
 def _moving_rms(x: np.ndarray, window_size: int) -> np.ndarray:
     kernel = np.ones(window_size, dtype=float) / window_size
     return np.sqrt(np.convolve(x**2, kernel, mode="same"))
@@ -228,11 +227,14 @@ def main(peaks: int, t1: float, t2: float, sensor: int):
         print(f"  Error: {e}")
         return
 
-    if len(S) > 62:
-        del S[62]
-        del y_all[62]
-    S.pop()
-    y_all.pop()
+    # Known-bad Zenodo records; match by FILENAME, not position, so the drop survives a re-sorted or extended dataset
+    bad = {
+        "1_0_290_LUT_20240619_composite_monitor_02.sg2",
+        "1_0_447_LUT_20240619_composite_monitor_02.sg2",
+    }
+    keep = [i for i, s in enumerate(S) if s["FILENAME"] not in bad]
+    S = [S[i] for i in keep]
+    y_all = [y_all[i] for i in keep]
 
     try:
         tempinterval, ys, n_temp, n_sensor = _extract_plateau_signals(S, y_all)
