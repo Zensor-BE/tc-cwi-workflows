@@ -3,12 +3,18 @@
 [![Python 3.11+](https://img.shields.io/badge/python-3.11+-blue.svg)](https://www.python.org/downloads/)
 [![PyPI package](https://img.shields.io/badge/pypi-tc--cwi%20%3E%3D0.1-brightgreen.svg)](https://pypi.org/project/tc-cwi/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.24077015.svg)](https://doi.org/10.5281/zenodo.24077015)
 [![Zenodo ULB](https://img.shields.io/badge/Zenodo-10.5281%2Fzenodo.19139843-blue)](https://doi.org/10.5281/zenodo.19139843)
 [![Zenodo Airbus](https://img.shields.io/badge/Zenodo-10.5281%2Fzenodo.19209079-blue)](https://doi.org/10.5281/zenodo.19209079)
 
 Reproducible research workflows for **Environmental and Operational Condition (EoC) compensation** in ultrasonic Structural Health Monitoring (SHM) using **Coda Wave Interferometry (CWI)** and the **Time-Stretching method**.
 
-This repository contains executable analysis pipelines replicating the experimental findings from two EWSHM 2026 studies (ULB and Airbus/UGE). Computational algorithms are decoupled and provided by the upstream PyPI package [`tc-cwi`](https://pypi.org/project/tc-cwi/) (`>=0.1`).
+This repository contains executable analysis pipelines replicating the experimental findings from two EWSHM 2026 studies (ULB and Airbus/UGE). Computational algorithms are decoupled and provided by the upstream PyPI package [`tc-cwi`](https://pypi.org/project/tc-cwi/) (`v0.1.5`).
+
+## USES2 Project & Official Links
+
+- **USES2 WP3 GitLab Repository:** [https://gitlab.com/uses2project/wp3/tc-cwi](https://gitlab.com/uses2project/wp3/tc-cwi)
+- **`tc-cwi` Software DOI:** [https://doi.org/10.5281/zenodo.24077015](https://doi.org/10.5281/zenodo.24077015)
 
 ---
 
